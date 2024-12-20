@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "ai-backend"
+version = "0.1.0"
+description = "ai-frontend's python backend"
+authors = ["Your Name <you@example.com>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+google-generativeai = "^0.8.3"
+onnxruntime = "^1.20.1"
+numpy = "^2.0.0"
+pygame = "^2.6.1"
+soundfile = "^0.12.1"
+sounddevice = "^0.5.1"
+llvmlite = "^0.43.0"
+# below is due to openai-whisper version clash, fix when possible
+numba = "^0.60.0"
+openai-whisper = "^20240930"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
