@@ -1062,6 +1062,20 @@ files = [
 ]
 
 [[package]]
+name = "piper-phonemize-fork"
+version = "1.2.0"
+description = "Phonemization libary used by Piper text to speech system"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "piper_phonemize_fork-1.2.0-cp312-cp312-win_amd64.whl", hash = "sha256:7445ac1fd72db91ec9ba5bde5c0c4a367ab38db86bf1e1da944631e205bdfbad"},
+]
+
+[package.source]
+type = "file"
+url = "wheels/piper_phonemize_fork-1.2.0-cp312-cp312-win_amd64.whl"
+
+[[package]]
 name = "proto-plus"
 version = "1.25.0"
 description = "Beautiful, Pythonic protocol buffers."
@@ -1767,4 +1781,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "01053c17bedeb1fb407c28bf54677a15a230fadb6ad57863654422930b48cc6e"
+content-hash = "94c75f7223544209486492f21d1f97468dcfb29cdf7caed4920241dad6284a71"

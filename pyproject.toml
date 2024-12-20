@@ -13,6 +13,7 @@ pygame = "^2.6.1"
 soundfile = "^0.12.1"
 sounddevice = "^0.5.1"
 llvmlite = "^0.43.0"
+piper_phonemize_fork = { file = "wheels/piper_phonemize_fork-1.2.0-cp312-cp312-win_amd64.whl" }
 # below is due to openai-whisper version clash, fix when possible
 numba = "^0.60.0"
 openai-whisper = "^20240930"
