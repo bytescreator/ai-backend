@@ -1,51 +1,41 @@
-import json
 import logging
-import sys
+import threading
+from signal import CTRL_C_EVENT
 
-# imported for side effects
-import actions
+import sound
 import speech.piper
-from messaging import handle_message, validate_actions
-
-
-def handle_stdin():
-    '''
-    Parses messages from stdin. Messages are formatted as newline delimited json
-    messages. An empty line stops the handler causing the program to exit normally
-    '''
-    logging.info("reading stdin started")
-    while True:
-        try:
-            rd = sys.stdin.readline()[:-1]
-            logging.debug(f"got new line from stdin {rd}")
-            if rd=="":
-                return
-            msg = json.loads(rd)
-
-        except json.decoder.JSONDecodeError:
-            logging.fatal(f"invalid message received")
-            return
-
-        logging.debug(f"received message {msg}")
-
-        handle_message(msg)
+from electron.messaging import handle_stdin, load_actions
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)
-    validate_actions()
+    load_actions()
 
     if not speech.piper.check_windows_exe():
         speech.piper.del_windows_exe()
         speech.piper.download_windows_release()
 
-    process, thread = speech.piper.process.start_piper_process()
-    speech.piper.process.wrap_process_stdin(process)
+    process = speech.piper.process.start_piper_process()
+    piper_pipe = threading.Thread(
+        target=lambda: speech.piper.process.bind_audio_player(sound.write_output, process))
+    piper_pipe.start()
 
     try:
         handle_stdin()
-    finally:
-        logging.info("waiting threads to terminate")
+    except KeyboardInterrupt:
+        logging.error("keyboard interrupt, exiting.")
+    except Exception as e:
+        logging.error(e)
+
+    logging.info("waiting threads to terminate")
+    sound.terminate()
+    process.send_signal(CTRL_C_EVENT)
+    try:
+        process.wait(timeout=10)
+    except KeyboardInterrupt:
+        logging.info("subprocess responded to interrupt")
+    except:
+        logging.info("subprocess didn't repond to interrupt, terminating...")
         process.terminate()
         process.wait()
-        thread.join()
-        logging.info("all threads are terminated")
+    piper_pipe.join()
+    logging.info("all threads are terminated")
