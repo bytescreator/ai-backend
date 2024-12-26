@@ -10,6 +10,7 @@ google-generativeai = "^0.8.3"
 pyaudio = "^0.2.14"
 openai-whisper = "^20240930"
 numpy = "^2.0.0"               # used by us but cannot use 2.1 releases due to numba
+silero-vad = "^5.1.2"
 # below is due to openai-whisper version clash, fix when possible
 llvmlite = "^0.43.0"
 numba = "^0.60.0"
