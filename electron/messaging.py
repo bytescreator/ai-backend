@@ -7,7 +7,7 @@ from typing import Any, Callable
 stdout_lock = threading.Lock()
 
 
-def _json_dump(obj):
+def json_dump(obj):
     with stdout_lock:
         json.dump(obj, sys.stdout)
         print()
@@ -60,26 +60,24 @@ def load_actions():
     logging.info(f"actions: {_actions}")
 
 
-def run_action(id: int, msg: Message):
+def run_action(msg: Message):
     # this is validated by messaging
     # message contains id and action fields
     action = msg["action"]
-    logging.debug(f"action {action} requested for msg id {msg['id']}")
+    logging.debug(f"action {action} requested")
 
     mapped_action = _actions.get(action)
     if mapped_action is None:
-        logging.debug(f"no action '{action}' found for msg id {msg['id']}")
+        logging.debug(f"no action '{action}' found")
         raise ActionError("unknown message action")
-    logging.debug(f"action {action} is found for msg id {msg['id']}")
+    logging.debug(f"action {action} is found")
     transformer = _param_transformers.get(action)
     logging.debug(
-        f"action {action} transformer {transformer} is found for msg id {msg['id']}")
+        f"action {action} transformer {transformer} is found")
     transformed = transformer(msg)
-    logging.debug(f"transformed params for msg id {msg['id']}: {transformed}")
+    logging.debug(f"transformed params: {transformed}")
 
-    response = mapped_action(*transformed[0], **transformed[1])
-    _json_dump({"response_id": id, **response}
-               if response is not None else {"response_id": id})
+    mapped_action(*transformed[0], **transformed[1])
 
 
 def handle_message(msg: Message):
@@ -90,16 +88,8 @@ def handle_message(msg: Message):
         logging.error("message is not a dict")
         raise MessageError("message root is not an object")
 
-    id = msg.get("id")
-    if id is None:
-        logging.error("message does not contain id")
-        raise MessageError("message root does not contain id")
-    if not isinstance(id, int):
-        logging.error("message id is not int")
-        raise MessageError("message id is not int")
-
     logging.debug("message handled, action calling in progress...")
-    run_action(id, msg)
+    run_action(msg)
 
 
 def handle_stdin():
