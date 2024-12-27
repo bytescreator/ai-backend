@@ -6,8 +6,12 @@ import pyaudio
 __audio = pyaudio.PyAudio()
 __output_lock = threading.Lock()
 __input_lock = threading.Lock()
-__output: pyaudio.Stream = None
-__input: pyaudio.Stream = None
+__output: pyaudio.Stream = __audio.open(
+    rate=22500,
+    channels=1, format=pyaudio.paInt16, output=True)
+__input: pyaudio.Stream = __audio.open(
+    rate=48000,
+    channels=1, format=pyaudio.paInt16, input=True)
 
 
 def terminate():
@@ -39,7 +43,7 @@ def select_output_device(id: int):
         if device_info["maxOutputChannels"] == 0:
             raise Exception("device does not have any output")
         new_output = __audio.open(
-            rate=int(device_info["defaultSampleRate"]),
+            rate=22500,
             channels=1,
             output=True,
             input_device_index=id,
@@ -73,15 +77,11 @@ def select_input_device(id: int):
 
 
 def read_input(num_frames: int, exception_on_overflow: bool = False):
-    logging.debug(f"read_output()")
     with __input_lock:
         return __input.read(num_frames, exception_on_overflow=exception_on_overflow)
-    logging.debug(f"read_output() done")
 
 
 def write_output(frames: bytes, num_frames: int = None, exception_on_underflow: bool = False):
-    logging.debug(f"write_output()")
     with __output_lock:
         __output.write(frames, num_frames=num_frames,
                        exception_on_underflow=exception_on_underflow)
-    logging.debug(f"write_output() done")

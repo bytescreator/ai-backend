@@ -1,3 +1,4 @@
+import gemini
 import sound
 
 from .messaging import json_dump, register_action
@@ -33,7 +34,7 @@ def select_sound_input(device_id: int):
 
 @register_action("submit-text")
 def submit_text(text: str):
-    pass
+    gemini.send_text(text)
 
 
 @register_action("toggle-listen")
