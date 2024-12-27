@@ -4,7 +4,7 @@ from signal import CTRL_C_EVENT
 
 import sound
 import speech.piper
-from electron.messaging import handle_stdin, load_actions
+from electron.messaging import handle_stdin, json_dump, load_actions
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)
@@ -19,6 +19,7 @@ if __name__ == "__main__":
         target=lambda: speech.piper.process.bind_audio_player(sound.write_output, process))
     piper_pipe.start()
 
+    json_dump({"action": "input-ready"})
     try:
         handle_stdin()
     except KeyboardInterrupt:
