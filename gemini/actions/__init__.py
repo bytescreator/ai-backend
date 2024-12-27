@@ -1,4 +1,6 @@
-from . import weather
+import sys
+
+from . import system, weather
 
 
 def extract_functions(x):
@@ -6,5 +8,6 @@ def extract_functions(x):
 
 
 action_list = [
-    extract_functions(weather),
+    *extract_functions(weather),
+    *extract_functions(system),
 ]

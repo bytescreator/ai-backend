@@ -1,3 +1,5 @@
+import logging
+
 import google.generativeai as genai
 import markdown
 from bs4 import BeautifulSoup
@@ -13,13 +15,13 @@ Kesinlikle ve kesinlikle yalnızca Türkçe cevap vermelisin çünkü konuşmala
 sesli olarak kullanıcıya iletilecektir ve ses çeviricisi yalnızca Türkçe \
 konuşabilmekte bunun yanında çok uzatmadan açık bir şekilde cevap vermelisin.\
 Amacın hızlı bir şekilde kullanıcın isteklerini tamamlayarak kullanıcıya yardımcı olmaktır.\
-""", tools=[*action_list])
-session = model.start_chat()
+""", tools=action_list)
+session = model.start_chat(enable_automatic_function_calling=True)
 
 
 def new_session():
     global session
-    session = model.start_chat()
+    session = model.start_chat(enable_automatic_function_calling=True)
 
 
 def rewind_session():
@@ -27,7 +29,9 @@ def rewind_session():
 
 
 def send_text(text: str, voice_activated: bool):
-    txt = session.send_message(text).text
+    resp = session.send_message(text)
+    logging.info(f"llm returned {resp}")
+    txt = resp.text
     json_dump({"action": "on-llm-response", "text": txt})
 
     if voice_activated:
