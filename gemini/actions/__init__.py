@@ -1,13 +1,12 @@
-import sys
+import glob
+from os.path import basename, dirname, isfile, join
 
-from . import system, weather
+__modules = glob.glob(join(dirname(__file__), "*.py"))
+__all__ = [basename(f)[:-3] for f in __modules if isfile(f)
+           and not f.endswith('__init__.py')]
 
+# this is not formatted, it should come after __all__
+# fmt: off
+from . import *
 
-def extract_functions(x):
-    return [getattr(x, name) for name in dir(x) if name.startswith("invokable_")]
-
-
-action_list = [
-    *extract_functions(weather),
-    *extract_functions(system),
-]
+# fmt: on

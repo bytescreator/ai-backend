@@ -6,7 +6,13 @@ from bs4 import BeautifulSoup
 from electron.messaging import json_dump
 from speech.piper.process import WrappedSynth
 
-from .actions import action_list
+from . import actions
+
+
+def extract_functions():
+    return [getattr(getattr(actions, elem), name) for elem in dir(actions) for name in dir(getattr(
+        actions, elem)) if name.startswith("invokable_")]
+
 
 genai.configure(api_key="AIzaSyBjcp4nPRf-AZ_E_y5psFuV4Emzxar6Gn8")
 model = genai.GenerativeModel("gemini-1.5-flash", safety_settings={}, system_instruction="""\
@@ -15,7 +21,7 @@ Kesinlikle ve kesinlikle yalnızca Türkçe cevap vermelisin çünkü konuşmala
 sesli olarak kullanıcıya iletilecektir ve ses çeviricisi yalnızca Türkçe \
 konuşabilmekte bunun yanında çok uzatmadan açık bir şekilde cevap vermelisin.\
 Amacın hızlı bir şekilde kullanıcın isteklerini tamamlayarak kullanıcıya yardımcı olmaktır.\
-""", tools=action_list)
+""", tools=extract_functions())
 session = model.start_chat(enable_automatic_function_calling=True)
 
 
