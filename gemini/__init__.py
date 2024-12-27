@@ -8,7 +8,7 @@ from speech.piper.process import WrappedSynth
 
 genai.configure(api_key="AIzaSyBjcp4nPRf-AZ_E_y5psFuV4Emzxar6Gn8")
 model = genai.GenerativeModel("gemini-1.5-flash", safety_settings={}, system_instruction="""\
-Sen sesli konuşabilen bir bilgisayar asistanısın.\
+Sen sesli konuşabilen bir bilgisayar asistanısın. Adın A.S.T.R.A .\
 Kesinlikle ve kesinlikle yalnızca Türkçe cevap vermelisin çünkü konuşmaların \
 sesli olarak kullanıcıya iletilecektir ve ses çeviricisi yalnızca Türkçe \
 konuşabilmekte bunun yanında çok uzatmadan açık bir şekilde cevap vermelisin.\
