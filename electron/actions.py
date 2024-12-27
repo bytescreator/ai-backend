@@ -34,7 +34,17 @@ def select_sound_input(device_id: int):
 
 @register_action("submit-text")
 def submit_text(text: str):
-    gemini.send_text(text)
+    gemini.send_text(text, False)
+
+
+@register_action("new-session")
+def new_session():
+    gemini.new_session()
+
+
+@register_action("rewind-session")
+def rewind_session():
+    gemini.rewind_session()
 
 
 @register_action("toggle-listen")

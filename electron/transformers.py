@@ -2,6 +2,8 @@ from .messaging import ActionError, Message, register_param_transformer
 
 
 @register_param_transformer("list-sound-devices")
+@register_param_transformer("new-session")
+@register_param_transformer("rewind-session")
 def list_sound_output_devices(_: Message):
     return (tuple(), {})
 

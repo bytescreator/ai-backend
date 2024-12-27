@@ -14,12 +14,24 @@ sesli olarak kullanıcıya iletilecektir ve ses çeviricisi yalnızca Türkçe \
 konuşabilmekte bunun yanında çok uzatmadan açık bir şekilde cevap vermelisin.\
 Amacın hızlı bir şekilde kullanıcın isteklerini tamamlayarak kullanıcıya yardımcı olmaktır.\
 """)
+session = model.start_chat()
 
 
-def send_text(text: str):
-    txt = model.generate_content(text).text
+def new_session():
+    global session
+    session = model.start_chat()
+
+
+def rewind_session():
+    session.rewind()
+
+
+def send_text(text: str, voice_activated: bool):
+    txt = session.send_message(text).text
     json_dump({"action": "on-llm-response", "text": txt})
-    # WrappedSynth.synth(_sanitize_output(txt))
+
+    if voice_activated:
+        WrappedSynth.synth(_sanitize_output(txt))
 
 
 def _sanitize_output(text: str) -> str:
