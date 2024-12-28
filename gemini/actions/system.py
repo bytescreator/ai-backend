@@ -9,14 +9,17 @@ import psutil
 
 # TODO: parcalanacak bu cok yavas pid, status falan bolunecek
 # TODO: ayrica cachelemek iyi olabilir
-def invokable_get_all_processes():
+def invokable_get_all_processes(order_by: str):
     """
-    Gets all processes in current running system.
+    Gets all processes in current running system ordered by specified field.
     Gets all processes cpu and memory information. Can be used to list processes
     by cpu usage or memory usage.
 
+    Parameters:
+    order_by: field to order by specified in function return, one of name, status, create_time, cpu_times, cpu_percent, memory_info
+
     Returns:
-    list[dict]: all processes with supplementary info as name, exe, cwd, status, create_time, cpu_times, cpu_percent, memory_info
+    list[dict]: all processes with supplementary info as name, status, create_time, cpu_times, cpu_percent, memory_info
     """
 
     logging.debug("get_all_processes called")
@@ -29,8 +32,6 @@ def invokable_get_all_processes():
                 {
                     "pid": process.pid,
                     "name": process.name(),
-                    "exe": process.exe(),
-                    "cwd": process.cwd(),
                     "status": process.status(),
                     "create_time": process.create_time(),
                     "cpu_times": process.cpu_times(),
@@ -39,10 +40,9 @@ def invokable_get_all_processes():
                 }
             )
         except:
-            logging.error(
-                f"failed to get information of process {process.pid}")
             pass
 
+    output.sort(key=lambda key: key[order_by])
     logging.debug(f"get_all_processes done, output: {output}")
     return output
 
