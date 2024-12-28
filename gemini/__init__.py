@@ -40,7 +40,7 @@ def send_text(text: str, voice_activated: bool):
     try:
         resp = session.send_message(text)
     except Exception as e:
-        logging.error(f"send_message raised an exception: {e}")
+        logging.error(f"send_message raised an exception", exc_info=e)
         raise e
     logging.info(f"llm returned {resp}")
     txt = resp.text

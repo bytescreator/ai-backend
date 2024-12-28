@@ -152,7 +152,7 @@ def invokable_load_headline(link: str):
 
 def invokable_open_headline_in_browser(link: str):
     """
-    opens given news link in users browser
+    opens given news link in users browser, should only be used with news
 
     Parameters:
     link (str): link to the headline
