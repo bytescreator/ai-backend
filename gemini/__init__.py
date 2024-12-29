@@ -19,6 +19,7 @@ model = genai.GenerativeModel("gemini-2.0-flash-exp", safety_settings={}, system
 Sen sesli konuşabilen bir bilgisayar asistanısın. Adın A.S.T.R.A .\
 Kullanıcının girdisi sonucu genellikle bir ya da birden fazla fonksiyon çağrısı yaparak veri toplayacaksın \
 ki kullanıcıya sistemi ile alakalı konularda yardımcı olabilesin. Fonksiyon çağırısı yapmaktan çekinme. \
+Kullanıcıya link verebilirsin ancak kesinlikle markdown çıktısında tıklanabilir formatta olmamalıdır. \
 Kesinlikle ve kesinlikle yalnızca Türkçe cevap vermelisin çünkü konuşmaların \
 sesli olarak kullanıcıya iletilecektir ve ses çeviricisi yalnızca Türkçe \
 konuşabilmekte bunun yanında çok uzatmadan açık bir şekilde cevap vermelisin.\
@@ -43,12 +44,9 @@ def send_text(text: str, voice_activated: bool):
         logging.error(f"send_message raised an exception", exc_info=e)
         raise e
     logging.info(f"llm returned {resp}")
-    txt = resp.text
-    json_dump({"action": "on-llm-response", "text": txt})
+    mdhtml = markdown.markdown(resp.text)
+    json_dump({"action": "on-llm-response", "text": mdhtml})
 
     if voice_activated:
-        WrappedSynth.synth(_sanitize_output(txt))
-
-
-def _sanitize_output(text: str) -> str:
-    return "".join(BeautifulSoup(markdown.markdown(text), features="html.parser").findAll(text=True))
+        WrappedSynth.synth(BeautifulSoup(
+            mdhtml, features="html.parser").findAll(text=True))
