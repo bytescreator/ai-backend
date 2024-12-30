@@ -7,11 +7,11 @@ __audio = pyaudio.PyAudio()
 __output_lock = threading.Lock()
 __input_lock = threading.Lock()
 __output: pyaudio.Stream = __audio.open(
-    rate=22500,
-    channels=1, format=pyaudio.paInt16, output=True)
+    rate=16000,
+    channels=1, format=pyaudio.paFloat32, output=True)
 __input: pyaudio.Stream = __audio.open(
-    rate=48000,
-    channels=1, format=pyaudio.paInt16, input=True)
+    rate=16000,
+    channels=1, format=pyaudio.paFloat32, input=True)
 
 
 def terminate():
@@ -63,12 +63,12 @@ def select_input_device(id: int):
         if device_info["maxInputChannels"] == 0:
             raise Exception("device does not have any input")
         new_input = __audio.open(
-            rate=int(device_info["defaultSampleRate"]),
+            rate=16000,
             channels=1,
             input=True,
             output=False,
             input_device_index=id,
-            format=pyaudio.paInt16,
+            format=pyaudio.paFloat32,
         )
         if __input != None:
             __input.close()

@@ -4,7 +4,8 @@ from .messaging import ActionError, Message, register_param_transformer
 @register_param_transformer("list-sound-devices")
 @register_param_transformer("new-session")
 @register_param_transformer("rewind-session")
-def list_sound_output_devices(_: Message):
+@register_param_transformer("toggle-listen")
+def no_input_transformer(_: Message):
     return (tuple(), {})
 
 
@@ -27,11 +28,3 @@ def submit_text_transformer(msg: Message):
     if not isinstance(text, str):
         raise ActionError("text is not string")
     return ((text,), {})
-
-
-@register_param_transformer("toggle-listen")
-def toggle_listen(msg: Message):
-    status = msg.get("status")
-    if status is None:
-        raise ActionError("status is missing from action")
-    return ((status,), {})
