@@ -94,4 +94,5 @@ def toggle_listen():
     transcribe_aud = np.frombuffer(m[:size], dtype=np.float32)
     tr = stt_model.transcribe(
         transcribe_aud, language="tr", word_timestamps=True, hallucination_silence_threshold=0.3)
-    json_dump({"action": "transcript-ready", "transcript": tr.get("text")})
+    json_dump({"action": "transcript-ready",
+              "transcript": "".join(tr.get("text"))})

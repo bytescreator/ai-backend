@@ -48,5 +48,5 @@ def send_text(text: str, voice_activated: bool):
     json_dump({"action": "on-llm-response", "text": mdhtml})
 
     if voice_activated:
-        WrappedSynth.synth(BeautifulSoup(
-            mdhtml, features="html.parser").findAll(text=True))
+        WrappedSynth.synth("".join(BeautifulSoup(
+            mdhtml, features="html.parser").findAll(text=True)))

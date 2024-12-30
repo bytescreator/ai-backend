@@ -7,7 +7,7 @@ class WrappedSynth:
     process: subprocess.Popen = None
 
     def synth(text: str) -> None:
-        logging.debug(f"WrappedSynth.synth is called with {text}")
+        logging.debug(f"WrappedSynth.synth is called with {text} {type(text)}")
         WrappedSynth.process.stdin.write(
             b'{"text": '+json.dumps(text).encode("utf-8")+b'}\n')
         WrappedSynth.process.stdin.flush()
