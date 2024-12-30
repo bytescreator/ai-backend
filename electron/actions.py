@@ -81,7 +81,7 @@ def toggle_listen():
                 "listening buffer filled up, passing to transcribe")
             break
 
-        if d > 0.3:
+        if d > 0.6:
             silence_cnt = 0
         else:
             silence_cnt += 1
