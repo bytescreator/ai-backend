@@ -29,7 +29,7 @@ def submit_text_transformer(msg: Message):
     if speak is None:
         speak = False
     else:
-        if not isinstance(text, bool):
+        if not isinstance(speak, bool):
             raise ActionError("speak is not bool")
     if not isinstance(text, str):
         raise ActionError("text is not string")
