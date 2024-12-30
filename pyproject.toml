@@ -5,20 +5,28 @@ description = "ai-frontend's python backend"
 package-mode = false
 
 [tool.poetry.dependencies]
+torchaudio = { version = "^2.5.1", source = "torch-cuda" }
 python = "^3.10"
 google-generativeai = "^0.8.3"
 pyaudio = "^0.2.14"
 openai-whisper = "^20240930"
-numpy = "^2.0.0"               # used by us but cannot use 2.1 releases due to numba
+numpy = "^2.0.0"                                             # used by us but cannot use 2.1 releases due to numba
 silero-vad = "^5.1.2"
 beautifulsoup4 = "^4.12.3"
 markdown = "^3.7"
 psutil = "^6.1.1"
 requests = "^2.32.3"
+torch = { version = "^2.5.1", source = "torch-cuda" }
+torchvision = { version = "^0.20.1", source = "torch-cuda" }
 # below is due to openai-whisper version clash, fix when possible
 llvmlite = "^0.43.0"
 numba = "^0.60.0"
 
+
+[[tool.poetry.source]]
+name = "torch-cuda"
+url = "https://download.pytorch.org/whl/cu118"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]
