@@ -15,7 +15,7 @@ from .messaging import json_dump, register_action
 
 vad_model = load_silero_vad(onnx=True)
 vad_iter = VADIterator(model=vad_model, sampling_rate=16000)
-stt_model = whisper.load_model("base", device="cuda")
+stt_model = whisper.load_model("base")
 MMAP_SIZE = 16000*4*1*30
 m = mmap.mmap(-1, MMAP_SIZE)
 

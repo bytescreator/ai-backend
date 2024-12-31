@@ -9,7 +9,7 @@ import psutil
 
 # TODO: parcalanacak bu cok yavas pid, status falan bolunecek
 # TODO: ayrica cachelemek iyi olabilir
-def invokable_get_all_processes(order_by: str):
+def invokable_get_all_processes(order_by: str, items: int):
     """
     Gets all processes in current running system ordered by specified field.
     Gets all processes cpu and memory information. Can be used to list processes
@@ -17,12 +17,13 @@ def invokable_get_all_processes(order_by: str):
 
     Parameters:
     order_by: field to order by specified in function return, one of name, status, create_time, cpu_times, cpu_percent, memory_info
+    items (int): requested item count, the model should deduct this from user input
 
     Returns:
     list[dict]: all processes with supplementary info as name, status, create_time, cpu_times, cpu_percent, memory_info
     """
-
-    logging.debug("get_all_processes called")
+    items = int(items)
+    logging.debug(f"get_all_processes called with {order_by}/{items}")
 
     output = []
 
@@ -43,8 +44,8 @@ def invokable_get_all_processes(order_by: str):
             pass
 
     output.sort(key=lambda key: key[order_by])
-    logging.debug(f"get_all_processes done, output: {output}")
-    return output
+    logging.debug(f"get_all_processes done, output: {output[-items:]}")
+    return output[-items:]
 
 
 def invokable_get_current_cpu_percentage():

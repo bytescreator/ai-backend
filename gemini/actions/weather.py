@@ -106,7 +106,8 @@ def invokable_mgm_weather_report_by_province(plate_num: int):
     Cannot be used for cities outside turkey. This function is synchronous, can be called in demand fast.
 
     Parameters:
-    province (int): plate number of the province in int type
+    province (int): plate number of the province in int type, should not be asked from
+    the user, instead the model should provide it by itself.
 
     Returns:
     current real time weather information of given city pulled from mgm
